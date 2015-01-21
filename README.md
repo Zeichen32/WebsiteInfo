@@ -1,6 +1,8 @@
 Website Info
 ============
 
+[![Build Status](https://travis-ci.org/Zeichen32/WebsiteInfo.svg?branch=master)](https://travis-ci.org/Zeichen32/WebsiteInfo)
+
 PHP library to retrieve server information like installed cms, webserver, dns lookup, etc... from any webpage
 
 Requirements:
