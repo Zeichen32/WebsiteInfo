@@ -1,0 +1,34 @@
+{
+    "name": "zeichen32/website-info",
+    "type": "library",
+    "description" : "PHP library to retrieve server info from any webpage like installed cms, webserver, etc",
+    "keywords": ["cms", "server", "lookup", "oembed", "opengraph", "twitter cards", "website info"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jens Averkamp",
+            "email": "j.averkamp@two-developers.com",
+            "homepage": "https://github.com/Zeichen32"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "symfony/event-dispatcher": "~2.6",
+        "symfony/dom-crawler" : "~2.6",
+        "guzzlehttp/guzzle": "~5.0",
+        "embed/embed" : "~1.8"
+    },
+    "suggest": {
+      "doctrine/cache": "Allows to cache the response container"
+    },
+    "require-dev" : {
+      "phpunit/phpunit": "4.4.*",
+      "doctrine/cache" : "~1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "WebsiteInfo\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
