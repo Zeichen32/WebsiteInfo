@@ -7,7 +7,7 @@ PHP library to retrieve server information like installed cms, webserver, dns lo
 
 Requirements:
 
-* PHP 5.3+
+* PHP 5.4+
 * Curl library installed
 * [allow_url_fopen: On](http://php.net/manual/en/filesystem.configuration.php#ini.allow-url-fopen)
 
