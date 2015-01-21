@@ -1,7 +1,7 @@
 Website Info
 ============
 
-PHP library to retrieve server information from any webpage like installed cms, webserver, dns lookup, etc...
+PHP library to retrieve server information like installed cms, webserver, dns lookup, etc... from any webpage
 
 Requirements:
 
@@ -9,13 +9,29 @@ Requirements:
 * Curl library installed
 * [allow_url_fopen: On](http://php.net/manual/en/filesystem.configuration.php#ini.allow-url-fopen)
 
+Install the library
+-----
+The preferred way to install this library is to use [Composer](http://getcomposer.org).
+
+``` bash
+$ php composer.phar require zeichen32/website-info ~1.0
+```
+
 Usage
 -----
 
 ```php
 
-// Create a new WebsiteInfo instance
+// Create a new WebsiteInfo instance with all default parser
 $ws = \WebsiteInfo\Factory::createWithDefaultParser();
+
+// OR
+$ws = \WebsiteInfo\Factory::create(array(
+            new \WebsiteInfo\Parser\Webserver\Apache(),
+            new \WebsiteInfo\Parser\Webserver\Nginx(),
+            new \WebsiteInfo\Parser\Webserver\IIS(),
+            // ...
+    ));
 
 // Retrieve informations about wordpress.com
 $result = $ws->get('http://wordpress.com');
