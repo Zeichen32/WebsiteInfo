@@ -36,7 +36,11 @@ class Google extends AbstractParser {
             foreach($scriptTags as $tag) {
 
                 // Google Analytics inline script
-                if(false !== stripos($tag->textContent, 'google-analytics.com/ga.js') || false !== stripos($tag->getAttribute('src'), 'google-analytics.com/urchin.js')) {
+                if(
+                    false !== stripos($tag->textContent, 'google-analytics.com/ga.js') ||
+                    false !== stripos($tag->textContent, 'google-analytics.com/analytics.js') ||
+                    false !== stripos($tag->getAttribute('src'), 'google-analytics.com/urchin.js')
+                ) {
                     if(!$event->getData()->hasSection('google_analytics')) {
                         $event->getData()->addSection('google_analytics', array(
                             'name' => 'GoogleAnalytics',

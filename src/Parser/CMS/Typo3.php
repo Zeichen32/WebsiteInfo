@@ -18,7 +18,6 @@ class Typo3 extends AbstractParser {
     public function onParseResponse(ParseResponseEvent $event)
     {
         $crawler = $event->getCrawler();
-
         $generator = $crawler->filterXPath('//head/meta[@name="generator"]')->extract(array('content'));
 
         if(count($generator) > 0) {
@@ -32,6 +31,25 @@ class Typo3 extends AbstractParser {
                     'score' => 1,
                     'raw' => $generator
                 ));
+            }
+        }
+
+        if(!$event->getData()->hasSection('cms')) {
+
+            $comments = $crawler->filterXPath('//*/comment()');
+            if($comments->count() > 0) {
+                foreach($comments as $comment) {
+                    if(false !== stripos($comment->textContent, 'This website is powered by TYPO3')) {
+                        $event->getData()->addSection('cms', array(
+                            'name' => 'Typo3',
+                            'version' => 'unknown',
+                            'score' => 1,
+                            'raw' => $comment->textContent
+                        ));
+
+                        break;
+                    }
+                }
             }
         }
     }
