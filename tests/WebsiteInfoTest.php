@@ -33,7 +33,7 @@ class WebsiteInfoTest extends AbstractParserTest {
         $ws->setCache($cache);
         $ws->get('http://example.org');
 
-        $this->assertTrue($cache->contains(md5($url)));
+        $this->assertTrue($cache->contains(\WebsiteInfo\WebsiteInfo::CACHE_PREFIX . md5($url)));
     }
 
     public function testGetWithArrayCache() {
@@ -46,7 +46,7 @@ class WebsiteInfoTest extends AbstractParserTest {
         $ws->setCache($cache);
         $ws->get('http://example.org');
 
-        $this->assertTrue($cache->contains(md5($url)));
+        $this->assertTrue($cache->contains(\WebsiteInfo\WebsiteInfo::CACHE_PREFIX . md5($url)));
     }
 
     public function testGetWithZendCache() {
@@ -64,6 +64,6 @@ class WebsiteInfoTest extends AbstractParserTest {
         $ws->setCache($cache);
         $ws->get('http://example.org');
 
-        $this->assertTrue($cache->contains(md5($url)));
+        $this->assertTrue($cache->contains(\WebsiteInfo\WebsiteInfo::CACHE_PREFIX . md5($url)));
     }
 }

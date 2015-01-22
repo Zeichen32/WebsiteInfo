@@ -20,7 +20,8 @@ use WebsiteInfo\Parser\ParserInterface;
 
 class WebsiteInfo {
 
-    const EVENT_PARSE_RESPONSE = 'on_parse_response';
+    const EVENT_PARSE_RESPONSE = 'zeichen32_websiteinfo.response.parse';
+    const CACHE_PREFIX = 'zeichen32_websiteinfo_';
 
     /** @var ClientInterface  */
     private $client;
@@ -125,7 +126,7 @@ class WebsiteInfo {
 
     public function get($url, $clientOptions = [], $cacheLifetime = 120) {
 
-        $cacheKey = md5($url);
+        $cacheKey = self::CACHE_PREFIX . md5($url);
 
         if($this->hasCached($cacheKey)) {
             $data = json_decode($this->getCached($cacheKey), true);
