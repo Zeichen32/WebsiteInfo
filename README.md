@@ -223,7 +223,7 @@ $result = $ws->get('http://wordpress.com');
 Using the result container cache
 -----
 
-1) Using the build in ArrayCache
+1) Using the ArrayCache (Memory Cache)
 
 ```php
 
@@ -231,7 +231,7 @@ Using the result container cache
 $ws = \WebsiteInfo\Factory::createWithDefaultParser();
 
 // Using the array cache
-$ws->setCache(new \WebsiteInfo\Cache\ArrayCache());
+$ws->setCache(new \TwoDevs\Cache\ArrayCache());
 
 // Retrieve informations about wordpress.com
 $result = $ws->get('http://wordpress.com');
@@ -249,7 +249,7 @@ $ws = \WebsiteInfo\Factory::createWithDefaultParser();
 $doctrineCache = new \Doctrine\Common\Cache\FilesystemCache('var/cache');
 
 // Create a new DoctrineCache adapter
-$cacheAdapter = new \WebsiteInfo\Cache\DoctrineCache($doctrineCache);
+$cacheAdapter = new \TwoDevs\Cache\DoctrineCache($doctrineCache);
 
 // Using the cache
 $ws->setCache($cacheAdapter);
@@ -270,7 +270,7 @@ $ws = \WebsiteInfo\Factory::createWithDefaultParser();
 $zendCache = new \Zend\Cache\Storage\Adapter\Memory();
 
 // Create a new ZendCache adapter
-$cacheAdapter = new \WebsiteInfo\Cache\ZendCache($zendCache);
+$cacheAdapter = new \TwoDevs\Cache\ZendCache($zendCache);
 
 // Using the cache
 $ws->setCache($cacheAdapter);

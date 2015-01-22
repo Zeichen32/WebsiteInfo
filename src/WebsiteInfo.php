@@ -13,7 +13,7 @@ namespace WebsiteInfo;
 use Saxulum\HttpClient\HttpClientInterface as ClientInterface;
 use Saxulum\HttpClient\Request;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use WebsiteInfo\Cache\CacheInterface;
+use TwoDevs\Cache\CacheInterface;
 use WebsiteInfo\Event\ParseResponseEvent;
 use WebsiteInfo\Exception\CannotReceiveInfoException;
 use WebsiteInfo\Parser\ParserInterface;
