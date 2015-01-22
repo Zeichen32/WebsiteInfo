@@ -11,12 +11,13 @@
 namespace WebsiteInfo\Parser\Embed;
 
 use Embed\RequestResolvers\RequestResolverInterface;
-use GuzzleHttp\Message\ResponseInterface;
+use Saxulum\HttpClient\Response;
 
 class RequestResolver implements RequestResolverInterface{
 
     private $url;
 
+    /** @var Response */
     private $response;
 
     /**
@@ -36,7 +37,7 @@ class RequestResolver implements RequestResolverInterface{
      */
     public function setConfig(array $config)
     {
-        if(!isset($config['response']) || !$config['response'] instanceof ResponseInterface) {
+        if(!isset($config['response']) || !$config['response'] instanceof Response) {
             throw new \LogicException('You must set response option');
         }
 
@@ -78,7 +79,7 @@ class RequestResolver implements RequestResolverInterface{
      */
     public function getContent()
     {
-        return (string) $this->response->getBody();
+        return (string) $this->response->getContent();
     }
 
     /**

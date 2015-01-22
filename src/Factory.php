@@ -10,7 +10,8 @@
 
 namespace WebsiteInfo;
 
-use GuzzleHttp\Client;
+use Saxulum\HttpClient\Guzzle\HttpClient as Client;
+use Saxulum\HttpClient\HttpClientInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Factory {
@@ -19,12 +20,16 @@ class Factory {
      * Create a new WebsiteInfo instance
      *
      * @param array $parser
-     * @param array $clientOptions
+     * @param HttpClientInterface $client
      * @return WebsiteInfo
      */
-    public static function create(array $parser = array(), $clientOptions = ['defaults' => ['verify' => false]]) {
+    public static function create(array $parser = array(), HttpClientInterface $client = null) {
 
-        $client = new Client($clientOptions);
+        if(null === $client) {
+            $guzzle = new \GuzzleHttp\Client(['defaults' => ['verify' => false]]);
+            $client = new Client($guzzle);
+        }
+
         $dispatcher = new EventDispatcher();
         return new WebsiteInfo($client, $dispatcher, $parser);
     }
@@ -32,10 +37,10 @@ class Factory {
     /**
      * Create a new WebsiteInfo instance with default parser
      *
-     * @param array $clientOptions
+     * @param HttpClientInterface $client
      * @return WebsiteInfo
      */
-    public static function createWithDefaultParser($clientOptions = ['defaults' => ['verify' => false]]) {
+    public static function createWithDefaultParser(HttpClientInterface $client = null) {
 
         $parser = array(
             new Parser\Lookup(),
@@ -55,6 +60,6 @@ class Factory {
             new Parser\Analytics\Piwik(),
         );
 
-        return self::create($parser, $clientOptions);
+        return self::create($parser, $client);
     }
 }

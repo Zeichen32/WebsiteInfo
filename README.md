@@ -279,3 +279,37 @@ $ws->setCache($cacheAdapter);
 $result = $ws->get('http://wordpress.com');
 
 ```
+
+How to use a different HttpClient
+-----
+
+This library use the [Saxulum HttpClientInterface](https://github.com/saxulum/saxulum-http-client-interface) which 
+allows you to simple change the used HttpClient. 
+
+For example you want to use [Buzz](https://github.com/kriswallsmith/Buzz) as HttpClient:
+
+1) Add the Buzz adapter to your composer.json:
+
+``` bash
+$ php composer.phar require saxulum-http-client-adapter-buzz ~1.0
+```
+
+2) Create a new BuzzClient
+
+```php
+
+    // Create a new Buzz Client 
+    $buzz = new \Buzz\Browser();
+    
+    // Create the client adapter
+    $client = new \Saxulum\HttpClient\Buzz\HttpClient($guzzle);
+    
+    // Create a new WebsiteInfo instance with all default parser and custom client
+    $ws = \WebsiteInfo\Factory::createWithDefaultParser($client);
+    
+    // Retrieve informations about wordpress.com
+    $result = $ws->get('http://wordpress.com');
+    
+    print_r($result);
+        
+```

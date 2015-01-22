@@ -10,7 +10,7 @@
 
 namespace WebsiteInfo\Parser;
 
-use GuzzleHttp\Url;
+use webignition\Url\Url;
 use WebsiteInfo\Event\ParseResponseEvent;
 use WebsiteInfo\WebsiteInfo;
 
@@ -25,11 +25,11 @@ class Lookup extends AbstractParser {
 
     public function onParseResponse(ParseResponseEvent $event)
     {
-        $url = Url::fromString($event->getRequest()->getUrl());
+        $url = new Url((string) $event->getRequest()->getUrl());
         $event->getData()->addSection('lookup', array(
-            'ip' => gethostbynamel($url->getHost()),
-            'hostname' => $url->getHost(),
-            'dns' => dns_get_record($url->getHost(), DNS_ALL )
+            'ip' => gethostbynamel( (string) $url->getHost()),
+            'hostname' => (string) $url->getHost(),
+            'dns' => dns_get_record( (string) $url->getHost(), DNS_ALL )
         ));
     }
 }

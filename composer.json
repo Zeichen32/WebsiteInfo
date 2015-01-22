@@ -15,8 +15,10 @@
         "php": ">=5.4.0",
         "symfony/event-dispatcher": "2.6.*",
         "symfony/dom-crawler" : "2.6.*",
-        "guzzlehttp/guzzle": "~5.0",
-        "embed/embed" : ">=1.8.3 <1.9"
+        "embed/embed" : ">=1.8.3 <1.9",
+        "webignition/url" : "~1.9",
+        "saxulum/saxulum-http-client-interface": "~1.0",
+        "saxulum/saxulum-http-client-adapter-guzzle": "~1.0"
     },
     "suggest": {
       "doctrine/cache": "Allows to cache the response container",

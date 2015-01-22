@@ -17,7 +17,7 @@ class PHPBB extends AbstractParser {
 
     public function onParseResponse(ParseResponseEvent $event)
     {
-        $html = (string) $event->getResponse()->getBody();
+        $html = (string) $event->getResponse()->getContent();
 
         if(false !== stripos($html, 'phpBB Group') || false !== stripos($html, 'Powered by phpBB')) {
             $event->getData()->addSection('cms', array(

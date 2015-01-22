@@ -10,9 +10,9 @@
 
 namespace WebsiteInfo\Parser\CMS;
 
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Url;
+use Saxulum\HttpClient\Request;
 use Symfony\Component\DomCrawler\Crawler;
+use webignition\Url\Url;
 use WebsiteInfo\Event\ParseResponseEvent;
 use WebsiteInfo\Parser\AbstractParser;
 
@@ -48,16 +48,17 @@ class Magento extends AbstractParser {
 
         $client = $event->getClient();
 
-        $url = Url::fromString($event->getRequest()->getUrl());
+        $url = new Url($event->getRequest()->getUrl());
         $url->setPath('/admin');
 
         try {
-            $response = $client->get((string) $url);
-        } catch(RequestException $exp) {
+            $request = new Request('1.1', Request::METHOD_GET, (string) $url);
+            $response = $client->request($request);
+        } catch(\Exception $exp) {
             return 1;
         }
 
-        $crawler = new Crawler((string) $response->getBody());
+        $crawler = new Crawler((string) $response->getContent());
 
         $titleTag = $crawler->filterXPath('//head/title');
 

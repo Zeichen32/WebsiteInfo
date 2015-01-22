@@ -10,7 +10,7 @@
 
 namespace WebsiteInfo\Parser\CMS;
 
-use GuzzleHttp\Exception\RequestException;
+use Saxulum\HttpClient\Request;
 use WebsiteInfo\Event\ParseResponseEvent;
 use WebsiteInfo\Parser\AbstractParser;
 
@@ -63,12 +63,13 @@ class Shopware extends AbstractParser {
     protected function checkStylesheet(ParseResponseEvent $event, $url) {
 
         try {
-            $response = $event->getClient()->get($url);
-        } catch(RequestException $exp) {
+            $request = new Request('1.1', Request::METHOD_GET, $url);
+            $response = $event->getClient()->request($request);
+        } catch(\Exception $exp) {
             return 0;
         }
 
-        $body = (string) $response->getBody();
+        $body = (string) $response->getContent();
 
         if(false !== stripos($body, 'http://www.shopware.de')) {
             return 5;

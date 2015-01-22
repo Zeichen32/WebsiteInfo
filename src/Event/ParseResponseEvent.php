@@ -10,19 +10,19 @@
 
 namespace WebsiteInfo\Event;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Message\RequestInterface;
-use GuzzleHttp\Message\ResponseInterface;
+use Saxulum\HttpClient\HttpClientInterface as ClientInterface;
+use Saxulum\HttpClient\Request;
+use Saxulum\HttpClient\Response;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\EventDispatcher\Event;
 use WebsiteInfo\WebsiteInfoContainer;
 
 class ParseResponseEvent extends Event {
 
-    /** @var RequestInterface */
+    /** @var Request */
     private $request;
 
-    /** @var ResponseInterface */
+    /** @var Response */
     private $response;
 
     /** @var WebsiteInfoContainer */
@@ -34,13 +34,13 @@ class ParseResponseEvent extends Event {
     /** @var  Crawler */
     private $crawler;
 
-    function __construct(ClientInterface $client, RequestInterface $request, ResponseInterface $response, WebsiteInfoContainer $data )
+    function __construct(ClientInterface $client, Request $request, Response $response, WebsiteInfoContainer $data )
     {
         $this->client = $client;
         $this->request = $request;
         $this->response = $response;
         $this->data = $data;
-        $this->crawler = new Crawler( (string) $response->getBody() );
+        $this->crawler = new Crawler( (string) $response->getContent() );
     }
 
     /**
@@ -52,7 +52,7 @@ class ParseResponseEvent extends Event {
     }
 
     /**
-     * @return RequestInterface
+     * @return Request
      */
     public function getRequest()
     {
@@ -60,7 +60,7 @@ class ParseResponseEvent extends Event {
     }
 
     /**
-     * @return ResponseInterface
+     * @return Response
      */
     public function getResponse()
     {

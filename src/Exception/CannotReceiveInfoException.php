@@ -10,6 +10,4 @@
 
 namespace WebsiteInfo\Exception;
 
-use GuzzleHttp\Exception\RequestException;
-
-class CannotReceiveInfoException extends RequestException { }
+class CannotReceiveInfoException extends \Exception { }

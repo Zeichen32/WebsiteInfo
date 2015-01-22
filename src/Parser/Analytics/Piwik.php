@@ -10,7 +10,6 @@
 
 namespace WebsiteInfo\Parser\Analytics;
 
-use GuzzleHttp\Url;
 use WebsiteInfo\Event\ParseResponseEvent;
 use WebsiteInfo\Parser\AbstractParser;
 

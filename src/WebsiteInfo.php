@@ -10,8 +10,8 @@
 
 namespace WebsiteInfo;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
+use Saxulum\HttpClient\HttpClientInterface as ClientInterface;
+use Saxulum\HttpClient\Request;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use WebsiteInfo\Cache\CacheInterface;
 use WebsiteInfo\Event\ParseResponseEvent;
@@ -37,13 +37,7 @@ class WebsiteInfo {
         $this->client = $client;
         $this->dispatcher = $dispatcher;
 
-        $this->setClientDefaultOptions($this->client);
         $this->addDefaultParser($parser);
-    }
-
-    protected function setClientDefaultOptions(ClientInterface $client) {
-        $client->setDefaultOption('headers/user-agent', 'WebsiteInfo');
-        $client->setDefaultOption('timeout', 5);
     }
 
     /**
@@ -124,7 +118,7 @@ class WebsiteInfo {
         }
     }
 
-    public function get($url, $clientOptions = [], $cacheLifetime = 120) {
+    public function get($url, $headers = [], $cacheLifetime = 120) {
 
         $cacheKey = self::CACHE_PREFIX . md5($url);
 
@@ -134,15 +128,10 @@ class WebsiteInfo {
         }
 
         try {
-            $request = $this->getClient()->createRequest('GET', $url, $clientOptions);
-            $response = $this->getClient()->send($request);
-        } catch( RequestException $exp) {
-            throw new CannotReceiveInfoException(
-                'Cannot receive website informations',
-                $exp->getRequest(),
-                $exp->getResponse(),
-                $exp
-            );
+            $request = new Request('1.1', Request::METHOD_GET, $url, $headers);
+            $response = $this->getClient()->request($request);
+        } catch( \Exception $exp) {
+            throw new CannotReceiveInfoException( 'Cannot receive website informations', 0, $exp );
         }
 
         $container = new WebsiteInfoContainer();

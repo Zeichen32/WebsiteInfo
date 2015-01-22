@@ -17,7 +17,7 @@ class Embed extends AbstractParser {
 
     public function onParseResponse(ParseResponseEvent $event)
     {
-        $content = \Embed\Embed::create($event->getRequest()->getUrl(), array(
+        $content = \Embed\Embed::create((string) $event->getRequest()->getUrl(), array(
             "resolver" => array(
                 "class" => 'WebsiteInfo\Parser\Embed\RequestResolver',
                 'options' => array(
@@ -55,5 +55,4 @@ class Embed extends AbstractParser {
             ));
         }
     }
-
 }
