@@ -13,6 +13,7 @@ namespace WebsiteInfo;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use WebsiteInfo\Cache\CacheInterface;
 use WebsiteInfo\Event\ParseResponseEvent;
 use WebsiteInfo\Exception\CannotReceiveInfoException;
 use WebsiteInfo\Parser\ParserInterface;
@@ -88,14 +89,9 @@ class WebsiteInfo {
     }
 
     /**
-     * @param \Doctrine\Common\Cache\Cache $cache
+     * @param CacheInterface $cache
      */
-    public function setCache($cache) {
-
-        if(!$cache instanceof \Doctrine\Common\Cache\Cache) {
-            throw new \InvalidArgumentException('Please use a doctrine cache instance!');
-        }
-
+    public function setCache(CacheInterface $cache) {
         $this->cache = $cache;
     }
 

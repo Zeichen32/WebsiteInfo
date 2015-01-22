@@ -150,21 +150,82 @@ Array
 )
 ```
 
-Using result container cache
+Available parser
 -----
 
-If doctrine cache is installed, it can be used to cache the result container.
+Parser | Class | Description
+------ | ----- | -----------
+Apache | [WebsiteInfo\Parser\Webserver\Apache](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/Webserver/Apache.php) | Try to find information about apache webserver
+Nginx | [WebsiteInfo\Parser\Webserver\Nginx](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/Webserver/Nginx.php) | Try to find information about nginx webserver
+IIS | [WebsiteInfo\Parser\Webserver\IIS](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/Webserver/IIS.php) | Try to find information about Microsoft IIS webserver
+Drupal | [WebsiteInfo\Parser\CMS\Drupal](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/CMS/Drupal.php) | Try to find information about installed Drupal CMS
+Joomla | [WebsiteInfo\Parser\CMS\Joomla](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/CMS/Joomla.php) | Try to find information about installed Joomla! CMS
+Magento | [WebsiteInfo\Parser\CMS\Magento](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/CMS/Magento.php) | Try to find information about installed Magento system
+phpBB | [WebsiteInfo\Parser\CMS\PHPBB](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/CMS/PHPBB.php) | Try to find information about installed phpBB system
+Shopware | [WebsiteInfo\Parser\CMS\Shopware](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/CMS/Shopware.php) | Try to find information about installed Shopware system
+Typo3 | [WebsiteInfo\Parser\CMS\Typo3](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/CMS/Typo3.php) | Try to find information about installed Typo3 CMS
+vBulletin | [WebsiteInfo\Parser\CMS\VBulletin](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/CMS/VBulletin.php) | Try to find information about installed vBulletin system
+Wordpress | [WebsiteInfo\Parser\CMS\Wordpress](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/CMS/Wordpress.php) | Try to find information about installed Wordpress CMS
+Google | [WebsiteInfo\Parser\Analytics\Google](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/Analytics/Google.php) | Try to find information about used google ads and analytics
+Piwik | [WebsiteInfo\Parser\Analytics\Piwik](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/Analytics/Piwik.php) | Try to find information about used piwik analytics
+Embed | [WebsiteInfo\Parser\Embed\Embed](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/Embed/Embed.php) | Try to find embed information
+Lookup | [WebsiteInfo\Parser\Lookup](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/Lookup.php) | Try to find lookup informations like dns, ip etc.
+
+
+Using the result container cache
+-----
+
+1) Using the build in ArrayCache
 
 ```php
 
 // Create a new WebsiteInfo instance
 $ws = \WebsiteInfo\Factory::createWithDefaultParser();
 
-// Create a new Cache instance
-$cache = new \Doctrine\Common\Cache\FilesystemCache('var/cache');
+// Using the array cache
+$ws->setCache(new \WebsiteInfo\Cache\ArrayCache());
+
+// Retrieve informations about wordpress.com
+$result = $ws->get('http://wordpress.com');
+
+```
+
+2) If doctrine cache is installed, it can be used to cache the result container using the doctrine cache adapter.
+
+```php
+
+// Create a new WebsiteInfo instance
+$ws = \WebsiteInfo\Factory::createWithDefaultParser();
+
+// Create a new DoctrineCache instance
+$doctrineCache = new \Doctrine\Common\Cache\FilesystemCache('var/cache');
+
+// Create a new DoctrineCache adapter
+$cacheAdapter = new \WebsiteInfo\Cache\DoctrineCache($doctrineCache);
 
 // Using the cache
-$ws->setCache($cache);
+$ws->setCache($cacheAdapter);
+
+// Retrieve informations about wordpress.com
+$result = $ws->get('http://wordpress.com');
+
+```
+
+3) If zend cache is installed, it can be used to cache the result container using the zend cache adapter.
+
+```php
+
+// Create a new WebsiteInfo instance
+$ws = \WebsiteInfo\Factory::createWithDefaultParser();
+
+// Create a new ZendStorage instance
+$zendCache = new \Zend\Cache\Storage\Adapter\Memory();
+
+// Create a new ZendCache adapter
+$cacheAdapter = new \WebsiteInfo\Cache\ZendCache($zendCache);
+
+// Using the cache
+$ws->setCache($cacheAdapter);
 
 // Retrieve informations about wordpress.com
 $result = $ws->get('http://wordpress.com');
