@@ -10,8 +10,6 @@
 
 namespace WebsiteInfo\Parser\CMS;
 
-
-use Symfony\Component\DomCrawler\Crawler;
 use WebsiteInfo\Event\ParseResponseEvent;
 use WebsiteInfo\Parser\AbstractParser;
 
@@ -19,7 +17,7 @@ class Typo3 extends AbstractParser {
 
     public function onParseResponse(ParseResponseEvent $event)
     {
-        $crawler = new Crawler((string) $event->getResponse()->getBody());
+        $crawler = $event->getCrawler();
 
         $generator = $crawler->filterXPath('//head/meta[@name="generator"]')->extract(array('content'));
 

@@ -13,6 +13,7 @@ namespace WebsiteInfo\Event;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Message\ResponseInterface;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\EventDispatcher\Event;
 use WebsiteInfo\WebsiteInfoContainer;
 
@@ -30,12 +31,16 @@ class ParseResponseEvent extends Event {
     /** @var ClientInterface */
     private $client;
 
+    /** @var  Crawler */
+    private $crawler;
+
     function __construct(ClientInterface $client, RequestInterface $request, ResponseInterface $response, WebsiteInfoContainer $data )
     {
         $this->client = $client;
         $this->request = $request;
         $this->response = $response;
         $this->data = $data;
+        $this->crawler = new Crawler( (string) $response->getBody() );
     }
 
     /**
@@ -65,5 +70,10 @@ class ParseResponseEvent extends Event {
     /** @return WebsiteInfoContainer */
     public function getData() {
         return $this->data;
+    }
+
+    /** @return Crawler */
+    public function getCrawler() {
+        return $this->crawler;
     }
 }

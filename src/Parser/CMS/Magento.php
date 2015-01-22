@@ -20,7 +20,7 @@ class Magento extends AbstractParser {
 
     public function onParseResponse(ParseResponseEvent $event)
     {
-        $crawler = new Crawler((string) $event->getResponse()->getBody());
+        $crawler = $event->getCrawler();
 
         $scriptTags = $crawler->filterXPath('//head/script')->extract(array('src'));
 

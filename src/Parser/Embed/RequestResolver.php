@@ -10,7 +10,6 @@
 
 namespace WebsiteInfo\Parser\Embed;
 
-
 use Embed\RequestResolvers\RequestResolverInterface;
 use GuzzleHttp\Message\ResponseInterface;
 

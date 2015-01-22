@@ -10,7 +10,6 @@
 
 namespace WebsiteInfo\Parser\Embed;
 
-
 use WebsiteInfo\Event\ParseResponseEvent;
 use WebsiteInfo\Parser\AbstractParser;
 

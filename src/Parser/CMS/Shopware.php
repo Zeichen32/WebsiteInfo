@@ -11,8 +11,6 @@
 namespace WebsiteInfo\Parser\CMS;
 
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Url;
-use Symfony\Component\DomCrawler\Crawler;
 use WebsiteInfo\Event\ParseResponseEvent;
 use WebsiteInfo\Parser\AbstractParser;
 
@@ -21,7 +19,7 @@ class Shopware extends AbstractParser {
     public function onParseResponse(ParseResponseEvent $event)
     {
         $score = 0;
-        $crawler = new Crawler((string) $event->getResponse()->getBody());
+        $crawler = $event->getCrawler();
 
         $scriptTags = $crawler->filterXPath('//head/script')->extract(array('src'));
         if(count($scriptTags) > 0) {
