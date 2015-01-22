@@ -51,6 +51,8 @@ class Factory {
             new Parser\CMS\Magento(),
             new Parser\CMS\Shopware(),
             new Parser\Embed\Embed(),
+            new Parser\Analytics\Google(),
+            new Parser\Analytics\Piwik(),
         );
 
         return self::create($parser, $clientOptions);

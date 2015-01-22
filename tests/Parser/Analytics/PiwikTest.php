@@ -10,31 +10,23 @@
 
 require_once dirname(__DIR__) . '/../../vendor/autoload.php';
 
-class GoogleTest extends AbstractParserTest {
+class PiwikTest extends AbstractParserTest {
 
-    public function testGoogleAnalytics() {
+    public function testOnParseResponse() {
 
-        $client = $this->getClientWithResponse('<!DOCTYPE html><html><head></head><body><script type="text/javascript"><!-- var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); document.write(unescape("%3Cscript src=\'" + gaJsHost + "google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E")); //--></script></body></html>');
+        $client = $this->getClientWithResponse('<!DOCTYPE html><html><head></head><body>' .
+'<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+var _paq = _paq || [];(function(){var u=(("https:" == document.location.protocol) ? "" : "http://example.org/");_paq.push(["setSiteId", "1"]);_paq.push(["setTrackerUrl", u+"piwik.php"]);_paq.push(["setDoNotTrack", 1]);_paq.push(["trackPageView"]);_paq.push(["setIgnoreClasses", ["no-tracking","colorbox"]]);_paq.push(["enableLinkTracking"]);var d=document,g=d.createElement("script"),s=d.getElementsByTagName("script")[0];g.type="text/javascript";g.defer=true;g.async=true;g.src=u+"piwik.js";s.parentNode.insertBefore(g,s);})();
+//--><!]]>
+</script></body></html>');
 
         $ws = new \WebsiteInfo\WebsiteInfo($client, $this->dispatcher, array(
-            new \WebsiteInfo\Parser\Analytics\Google()
+            new \WebsiteInfo\Parser\Analytics\Piwik()
         ));
         $result = $ws->get('http://example.org');
 
-        $this->assertArrayHasKey('google_analytics', $result);
-        $this->assertEquals('GoogleAnalytics', $result['google_analytics']['name']);
-    }
-
-    public function testGoogleAds() {
-
-        $client = $this->getClientWithResponse('<!DOCTYPE html><html><head><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"> </script></head><body></body></html>');
-
-        $ws = new \WebsiteInfo\WebsiteInfo($client, $this->dispatcher, array(
-            new \WebsiteInfo\Parser\Analytics\Google()
-        ));
-        $result = $ws->get('http://example.org');
-
-        $this->assertArrayHasKey('google_ads', $result);
-        $this->assertEquals('GoogleAds', $result['google_ads']['name']);
+        $this->assertArrayHasKey('piwik_analytics', $result);
+        $this->assertEquals('PiwikAnalytics', $result['piwik_analytics']['name']);
     }
 }
