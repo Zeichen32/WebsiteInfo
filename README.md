@@ -171,6 +171,54 @@ Piwik | [WebsiteInfo\Parser\Analytics\Piwik](https://github.com/Zeichen32/Websit
 Embed | [WebsiteInfo\Parser\Embed\Embed](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/Embed/Embed.php) | Try to find embed information
 Lookup | [WebsiteInfo\Parser\Lookup](https://github.com/Zeichen32/WebsiteInfo/blob/master/src/Parser/Lookup.php) | Try to find lookup informations like dns, ip etc.
 
+Create your own parser
+-----
+
+1) Create a new parser that do something with the response
+
+```php
+
+namespace Acme\Parser;
+
+use WebsiteInfo\Event\ParseResponseEvent;
+use WebsiteInfo\Parser\AbstractParser;
+
+class MyParser extends AbstractParser {
+
+    public function onParseResponse(ParseResponseEvent $event)
+    {
+        // Get response object
+        $response = $event->getResponse();
+        
+        // Do something with the response
+        $something = $this->doSomething( (string) $response->getBody() );
+
+        // Add a new section to the output container
+        $event->getData()->addSection('my_new_section', array(
+            'foo' => 'bar',
+            'version' => '1.0',
+            'score' => 1,
+            'raw' => $something
+        ));
+    }
+}
+
+```
+
+2) Use your parser
+
+```php
+
+// Create a new WebsiteInfo instance
+$ws = \WebsiteInfo\Factory::createWithDefaultParser();
+
+// Register your parser
+$ws->addParser(new \Acme\Parser\MyParser());
+
+// Retrieve informations about wordpress.com
+$result = $ws->get('http://wordpress.com');
+
+```
 
 Using the result container cache
 -----
@@ -226,55 +274,6 @@ $cacheAdapter = new \WebsiteInfo\Cache\ZendCache($zendCache);
 
 // Using the cache
 $ws->setCache($cacheAdapter);
-
-// Retrieve informations about wordpress.com
-$result = $ws->get('http://wordpress.com');
-
-```
-
-Create your own parser
------
-
-1) Create a new parser that do something with the response
-
-```php
-
-namespace Acme\Parser;
-
-use WebsiteInfo\Event\ParseResponseEvent;
-use WebsiteInfo\Parser\AbstractParser;
-
-class MyParser extends AbstractParser {
-
-    public function onParseResponse(ParseResponseEvent $event)
-    {
-        // Get response object
-        $response = $event->getResponse();
-        
-        // Do something with the response
-        $something = $this->doSomething( (string) $response->getBody() );
-
-        // Add a new section to the output container
-        $event->getData()->addSection('my_new_section', array(
-            'foo' => 'bar',
-            'version' => '1.0',
-            'score' => 1,
-            'raw' => $something
-        ));
-    }
-}
-
-```
-
-2) Use your parser
-
-```php
-
-// Create a new WebsiteInfo instance
-$ws = \WebsiteInfo\Factory::createWithDefaultParser();
-
-// Register your parser
-$ws->addParser(new \Acme\Parser\MyParser());
 
 // Retrieve informations about wordpress.com
 $result = $ws->get('http://wordpress.com');
