@@ -29,4 +29,15 @@ var _paq = _paq || [];(function(){var u=(("https:" == document.location.protocol
         $this->assertArrayHasKey('piwik_analytics', $result);
         $this->assertEquals('PiwikAnalytics', $result['piwik_analytics']['name']);
     }
+
+    public function testPiwikAsCms() {
+        $client = $this->getClientWithResponse('<!DOCTYPE html><html><head><script type="text/javascript">var translations = {}; if (typeof(piwik_translations) == \'undefined\') { var piwik_translations = new Object; }for(var i in translations) { piwik_translations[i] = translations[i];} </script></head><body></body></html>');
+        $ws = new \WebsiteInfo\WebsiteInfo($client, $this->dispatcher, array(
+            new \WebsiteInfo\Parser\Analytics\Piwik()
+        ));
+        $result = $ws->get('http://example.org');
+
+        $this->assertArrayHasKey('cms', $result);
+        $this->assertEquals('PiwikAnalytics', $result['cms']['name']);
+    }
 }

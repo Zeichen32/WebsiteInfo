@@ -34,6 +34,14 @@ class Piwik extends AbstractParser {
                         'score' => 1,
                     ));
                 }
+
+                if(false !== stripos($tag->textContent, 'typeof(piwik_translations)')) {
+                    $event->getData()->addSection('cms', array(
+                        'name' => 'PiwikAnalytics',
+                        'version' => 'unknown',
+                        'score' => 1,
+                    ));
+                }
             }
         }
     }
